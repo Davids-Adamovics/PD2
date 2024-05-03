@@ -10,9 +10,10 @@ use Illuminate\Support\Facades\Redirect;
 
 class AuthorController extends Controller
 {
-   
+
     //display all authors
-    public function list(): View{
+    public function list(): View
+    {
 
         $items = Author::orderBy('name', 'asc')->get();
 
@@ -31,12 +32,14 @@ class AuthorController extends Controller
         return view(
             'author.form',
             [
-                'title' => 'Pievienot autoru'
+                'title' => 'Pievienot autoru',
+                'author' => new Author(),
+
             ]
         );
     }
-    
-    
+
+
     // creates new Author data
     public function put(Request $request): RedirectResponse
     {
@@ -51,4 +54,38 @@ class AuthorController extends Controller
         return redirect('/authors');
     }
 
+
+
+    // display Author edit form
+    public function update(Author $author): View
+    {
+        return view(
+            'author.form',
+            [
+                'title' => 'Rediģēt autoru',
+                'author' => $author,
+            ]
+        );
+    }
+
+    // update Author data
+    public function patch(Author $author, Request $request): RedirectResponse
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $author->name = $validatedData['name'];
+        $author->save();
+
+        return redirect('/authors');
+    }
+
+    // delete Author
+    public function delete(Author $author): RedirectResponse
+    {
+        // šeit derētu pārbaude, kas neļauj dzēst autoru, ja tas piesaistīts eksistējošām grāmatām
+        $author->delete();
+        return redirect('/authors');
+    }
 }
