@@ -31,7 +31,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             // Šo vēlāk nomainīsim uz /books
-            return redirect('/authors');
+            return redirect('/books');
         }
 
         return back()->withErrors([
@@ -49,4 +49,7 @@ class AuthController extends Controller
 
         return redirect('/');
     }
+
+
+    
 }

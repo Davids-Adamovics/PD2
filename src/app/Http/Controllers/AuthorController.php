@@ -100,4 +100,6 @@ class AuthorController extends Controller implements HasMiddleware
         $author->delete();
         return redirect('/authors');
     }
+
+    
 }
