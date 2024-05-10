@@ -7,9 +7,21 @@ use Illuminate\View\View;
 use App\Models\Author;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
-class AuthorController extends Controller
+
+class AuthorController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            'auth',
+        ];
+    }
+    //šeit tiek izmantota "middleware" - vairākos tīmekļa satvaros ir šāds mehānisms,
+    //kas ļauj veikt apstrādi visiem HTTP pieprasījumiem pirms un pēc kontrolieru metodēm
+    //šeit izmantojam iebūvēto "auth" midlevāri, kas pārbauda, vai lietotājs ir autentificēts
+
 
     //display all authors
     public function list(): View
