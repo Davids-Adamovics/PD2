@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BookRequest;
 use App\Models\Author;
 use App\Models\Book;
 use Illuminate\View\View;
@@ -35,37 +36,11 @@ class BookController extends Controller implements HasMiddleware
         );
     }
 
-
-    // display new Book form
-    public function create(): View
+    // validate and save book data
+    private function saveBookData(Book $book, BookRequest $request): void
     {
-        $authors = Author::orderBy('name', 'asc')->get();
+        $validatedData = $request->validated();
 
-        return view(
-            'book.form',
-            [
-                'title' => 'Pievienot grāmatu',
-                'book' => new Book(),
-                'authors' => $authors,
-            ]
-        );
-    }
-
-
-    // create new Book entry
-    public function put(Request $request): RedirectResponse
-    {
-        $validatedData = $request->validate([
-            'name' => 'required|min:3|max:256',
-            'author_id' => 'required',
-            'description' => 'nullable',
-            'price' => 'nullable|numeric',
-            'year' => 'numeric',
-            'image' => 'nullable|image',
-            'display' => 'nullable',
-        ]);
-
-        $book = new Book();
         $book->name = $validatedData['name'];
         $book->author_id = $validatedData['author_id'];
         $book->description = $validatedData['description'];
@@ -85,7 +60,29 @@ class BookController extends Controller implements HasMiddleware
         }
 
         $book->save();
+    }
 
+    // display new Book form
+    public function create(): View
+    {
+        $authors = Author::orderBy('name', 'asc')->get();
+
+        return view(
+            'book.form',
+            [
+                'title' => 'Pievienot grāmatu',
+                'book' => new Book(),
+                'authors' => $authors,
+            ]
+        );
+    }
+
+
+    // create new Book entry
+    public function put(BookRequest $request): RedirectResponse
+    {
+        $book = new Book();
+        $this->saveBookData($book, $request);
         return redirect('/books');
     }
 
@@ -105,42 +102,12 @@ class BookController extends Controller implements HasMiddleware
     }
 
     // update Book data
-    public function patch(Book $book, Request $request): RedirectResponse
+    public function patch(Book $book, BookRequest $request): RedirectResponse
     {
-        $validatedData = $request->validate([
-            'name' => 'required|min:3|max:256',
-            'author_id' => 'required',
-            'description' => 'nullable',
-            'price' => 'nullable|numeric',
-            'year' => 'numeric',
-            'image' => 'nullable|image',
-            'display' => 'nullable',
-        ]);
-
-        $book->name = $validatedData['name'];
-        $book->author_id = $validatedData['author_id'];
-        $book->description = $validatedData['description'];
-        $book->price = $validatedData['price'];
-        $book->year = $validatedData['year'];
-        $book->display = (bool) ($validatedData['display'] ?? false);
-
-        if ($request->hasFile('image')) {
-            $uploadedFile = $request->file('image');
-            $extension = $uploadedFile->clientExtension();
-            $name = uniqid();
-            $book->image =  $uploadedFile->storePubliclyAs(
-                '/',
-                $name . '.' . $extension,
-                'uploads'
-            );
-        }
-
-        $book->save();
-
+        $this->saveBookData($book, $request);
         return redirect('/books');
     }
 
-    // delete Book
     // delete Book
     public function delete(Book $book): RedirectResponse
     {
