@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DataController;
+use App\Http\Controllers\CategoryController;
 
 Route::get('/', [HomeController::class, 'index']);
 
@@ -34,3 +35,12 @@ Route::post('/books/delete/{book}', [BookController::class, 'delete']);
 Route::get('/data/get-top-books', [DataController::class, 'getTopBooks']);
 Route::get('/data/get-book/{book}', [DataController::class, 'getBook']);
 Route::get('/data/get-related-books/{book}', [DataController::class, 'getRelatedBooks']);
+
+// Category 
+Route::get('/category', [CategoryController::class, 'list']);
+Route::get('/category/create', [CategoryController::class, 'create']);
+Route::post('/category/put', [CategoryController::class, 'put']);
+Route::get('/category/update/{category}', [CategoryController::class, 'update']);
+Route::post('/category/patch/{category}', [CategoryController::class, 'patch']);
+Route::post('/category/delete/{category}', [CategoryController::class, 'delete']);
+

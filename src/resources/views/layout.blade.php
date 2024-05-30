@@ -36,6 +36,10 @@
                     </li>
 
                     <li class="nav-item">
+                        <a class="nav-link" href="/category">Kategorijas</a>
+                    </li>
+
+                    <li class="nav-item">
                         <a class="nav-link" href="/authors">Autori</a>
                     </li>
 
