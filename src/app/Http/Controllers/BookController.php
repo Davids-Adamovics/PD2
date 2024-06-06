@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BookRequest;
 use App\Models\Author;
+use App\Models\Category;
 use App\Models\Book;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -43,6 +44,7 @@ class BookController extends Controller implements HasMiddleware
 
         $book->name = $validatedData['name'];
         $book->author_id = $validatedData['author_id'];
+        $book->category_id = $validatedData['category_id'];
         $book->description = $validatedData['description'];
         $book->price = $validatedData['price'];
         $book->year = $validatedData['year'];
@@ -66,6 +68,7 @@ class BookController extends Controller implements HasMiddleware
     public function create(): View
     {
         $authors = Author::orderBy('name', 'asc')->get();
+        $categories = Category::orderBy('name', 'asc')->get();
 
         return view(
             'book.form',
@@ -73,6 +76,7 @@ class BookController extends Controller implements HasMiddleware
                 'title' => 'Pievienot grāmatu',
                 'book' => new Book(),
                 'authors' => $authors,
+                'categories' => $categories,
             ]
         );
     }
@@ -90,6 +94,7 @@ class BookController extends Controller implements HasMiddleware
     public function update(Book $book): View
     {
         $authors = Author::orderBy('name', 'asc')->get();
+        $categories = Category::orderBy('name', 'asc')->get();
 
         return view(
             'book.form',
@@ -97,6 +102,7 @@ class BookController extends Controller implements HasMiddleware
                 'title' => 'Rediģēt grāmatu',
                 'book' => $book,
                 'authors' => $authors,
+                'categories' => $categories,
             ]
         );
     }

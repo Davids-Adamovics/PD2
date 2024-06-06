@@ -15,6 +15,7 @@ public function up(): void
     Schema::create('books', function (Blueprint $table) {
         $table->id();
         $table->foreignId('author_id');
+        $table->foreignId('category_id');
         $table->string('name', 256);
         $table->text('description')->nullable();
         $table->decimal('price', 8, 2)->nullable();
@@ -23,6 +24,7 @@ public function up(): void
         $table->boolean('display');
         $table->timestamps();
         $table->foreign('author_id')->references('id')->on('authors');
+        $table->foreign('category_id')->references('id')->on('categories');
     });
 }
 
