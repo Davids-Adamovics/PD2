@@ -182,7 +182,7 @@ function RelatedContainer({ selectedBook, onSelect }) {
                 <>
                     <div className="row mt-5">
                         <div className="col-md-12">
-                            <h2 className="display-4">Līdzīgi booki</h2>
+                            <h2 className="display-4">Līdzīgas grāmatas</h2>
                         </div>
                     </div>
                     <div className="row mb-5">

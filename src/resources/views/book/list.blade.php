@@ -13,6 +13,7 @@
                     <th>ID</th>
                     <th>Nosaukums</th>
                     <th>Autors</th>
+                    <th>Kategorija</th>
                     <th>Gads</th>
                     <th>Cena</th>
                     <th>Attēlot</th>
